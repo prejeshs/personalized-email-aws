@@ -1,4 +1,4 @@
-# Personalized Email Delivery Platform with AWS
+# Personalized Email Automation with AWS
 
 This project implements a serverless solution to automate personalized email delivery using AWS cloud services. It integrates AWS Lambda, SES, DynamoDB, CloudWatch, and IAM to send templated newsletter emails tailored to individual user preferences.
 
