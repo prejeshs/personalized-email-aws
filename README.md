@@ -4,13 +4,13 @@ This project implements a serverless solution to automate personalized email del
 
 ## Features
 
-- Sends personalized emails using AWS SES templates  
-- Dynamic content populated with real-time data from external APIs  
-- Subscriber preferences stored and managed in DynamoDB  
-- Secure execution via IAM roles  
-- Monitoring and logging through AWS CloudWatch  
+- Sends dynamic, personalized emails with AWS SES
+- Pulls real-time data from external sources for content enrichment
+- Subscriber preferences stored in DynamoDB
+- Fully serverless and scalable using AWS Lambda
+- Monitored and secured via CloudWatch and IAM
 
-## Technologies Used
+## Services Used
 
 - **AWS Lambda**: Executes the core logic for email personalization and delivery  
 - **Amazon SES**: Sends emails using predefined templates with dynamic placeholders  
@@ -28,9 +28,15 @@ This project follows a serverless architecture to ensure scalability, cost-effic
 
 ## Workflow Summary
 
-1. **Trigger**: Lambda is triggered either manually or on a schedule.  
-2. **Data Retrieval**: Lambda reads subscriber preferences from DynamoDB.  
-3. **Optional API Call**: External data (e.g., weather, sports, news) is fetched in real time.  
-4. **Templating**: Data is inserted into SES email templates using dynamic fields.  
-5. **Email Delivery**: SES sends personalized emails to subscribers.  
-6. **Monitoring**: Execution logs and metrics are recorded in CloudWatch.  
+
+1. **Trigger**: Admin or user triggers the Lambda function manually or on a schedule.  
+2. **Data Fetching**:
+   - Subscriber preferences are retrieved from **DynamoDB**.
+   - External content (e.g., news or sports updates) is fetched via a **News API**.  
+3. **Email Preparation**:
+   - Dynamic content is injected into **SES** templates.  
+4. **Delivery**:
+   - Email is sent to the recipient via **Amazon SES**.
+5. **Monitoring & Security**:
+   - Execution logs and errors are monitored via **CloudWatch**.
+   - **IAM** manages roles and permissions between services. 
