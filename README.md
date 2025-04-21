@@ -1,6 +1,6 @@
 # Serverless Email Automation using AWS
 
-This project implements a serverless solution to automate personalized email delivery using AWS cloud services. It leverages AWS Lambda, SES, DynamoDB, CloudWatch, and IAM to send templated emails tailored to individual user preferences.
+This project implements a serverless solution to automate personalized email delivery using AWS cloud services. It integrates AWS Lambda, SES, DynamoDB, CloudWatch, and IAM to send templated newsletter emails tailored to individual user preferences.
 
 ## Features
 
@@ -20,7 +20,7 @@ This project implements a serverless solution to automate personalized email del
 
 ## Architecture Overview
 
-This project follows a serverless architecture to ensure scalability, cost-efficiency, and minimal operational overhead. The system retrieves user preferences from DynamoDB, optionally fetches real-time content from an API, then injects this data into an SES template for personalized email delivery.
+This project follows a serverless architecture to ensure scalability, cost-efficiency, and minimal operational overhead. The system retrieves user preferences from DynamoDB, fetches real-time content from an external API (NewsAPI), then injects this data into an SES template for personalized email delivery.
 
 ## Architecture Diagram
 
