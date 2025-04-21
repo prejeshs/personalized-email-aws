@@ -1,0 +1,45 @@
+{
+	"Items":[
+	{
+  "sn": {
+    "S": "1"
+  },
+  "brand": {
+    "S": "Twitter"
+  },
+  "created_at": {
+    "S": "10/24/24"
+  },
+  "email": {
+    "S": "p64517412@gmail.com"
+  },
+  "google-search": {
+    "S": "Cricket"
+  },
+  "user": {
+    "S": "Team PS"
+  }
+},
+{
+  "sn": {
+    "S": "2"
+  },
+  "brand": {
+    "S": "Cvent"
+  },
+  "created_at": {
+    "S": "10/26/24"
+  },
+  "email": {
+    "S": "example1@gmail.com"
+  },
+  "google-search": {
+    "S": "Football"
+  },
+  "user": {
+    "S": "User1"
+  }
+}
+	
+	] 
+} 
