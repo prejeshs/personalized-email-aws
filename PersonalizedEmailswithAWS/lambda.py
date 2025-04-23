@@ -19,43 +19,43 @@ class NewsMails:
                 emaildata.extend(response['Items'])
         except ClientError as e:
             print(e.response['Error']['Message'])
-            self.Email_Failed_Transaction("Exception error while getting all DynamoDB records..!")
+            self.Email_Failed_Transaction("An exception occured while fetching DynamoDB records")
         else:
-            print("Dynamo DB records returned , hence retruning now"),
+            print("Records found in DynamoDB, returning the records now"),
             return emaildata
 
     def GetAllNews (self , search, UserName, Email) :
         try :
-            print("get news for the  run...")
+            print("Getting news for the run")
             newsapi = NewsApiClient(api_key= self.NewsApikey)
             from_date = datetime.now(timezone.utc) + timedelta(days=-3)
             end_time = datetime.now(timezone.utc) + timedelta(days=0)
             all_articles = newsapi.get_everything(q=search,from_param=from_date,to=end_time,language='en',sort_by='relevancy')
             print(all_articles)
             if all_articles :
-                print("News APIs have returened..")
+                print("News API returned the following")
                 dt = date.today()
                 iso_date = dt.isoformat()
                 all_articles.update({"UserName": UserName, "Email":Email, "ISODate": iso_date, "SearchString": search})
             if all_articles['articles']:
-                print("Response has the news in it hence sorting")
+                print("Response contains news, sorting now")
                 all_articles['articles'].sort(key=lambda item:item['publishedAt'], reverse=True)
             else:
-                print("Response does not has the news hence not sorting but sending fail email.")
-                self.Email_Failed_Transaction("Response does not has the news hence not sorting but sending fail email.")
+                print("Response does not contain any news, sending fail mail")
+                self.Email_Failed_Transaction("Response does not contain any news, sending fail mail")
         except ClientError as e:
             print(e.response['Error']['Message'])
-            self.Email_Failed_Transaction("Exception error while getting news via API call.")
+            self.Email_Failed_Transaction("An exception occured during the API call")
         else:
-            print("News is retrieved as expected , hence retruning now"),
+            print("News has been retrieved, returning now"),
             return all_articles
 
     def CreateUpdateEmailTemplate(self):
         try :
-            print("get news for the  run...")
+            print("Getting news for the run")
             Getresponse = self.ses_client.get_template( TemplateName='NewAPIResultsMail')
             if Getresponse['Template'] and Getresponse['ResponseMetadata']['HTTPStatusCode'] == 200 :
-                print("template alredy exists hence updating it now")
+                print("Template already exists. Updating the template now")
                 self.ses_client.update_template( 
                                 Template={
                                         "TemplateName": "NewAPIResultsMail",
@@ -84,7 +84,7 @@ class NewsMails:
                                                     </head>
                                                     <body>
                                                     <p style="font-family:'Futura Medium'">Hello {{ UserName }},</p>
-                                                    <p style="font-family:'Futura Medium'">Below are news on serach string {{ SearchString }} for Date : {{ISODate}}:</p>
+                                                    <p style="font-family:'Futura Medium'">Below is the requested news on {{ SearchString }} for Date : {{ISODate}}:</p>
                                                     
                                                     <table style="width:100%">
                                                         <col style="width:50%">
@@ -125,7 +125,7 @@ class NewsMails:
                                         "TextPart": """
                                                     Hello {{ UserName }},
                                                     
-                                                    Below are news on serach string {{ SearchString }} for Date : {{ISODate}}:  
+                                                    Below is the requested news on {{ SearchString }} for Date : {{ISODate}}:  
                                                             
                                                         {{#each articles}}
                                                         {{source.id}}
@@ -149,7 +149,7 @@ class NewsMails:
             print("SES template is updated successfully")
             return True
         except ClientError as e:
-            print("SES template is not there hence creating now")
+            print("SES template does not exist. Creating now")
             self.ses_client.create_template(
                                 Template={ 
                                         "TemplateName": "NewAPIResultsMail",
@@ -176,7 +176,7 @@ class NewsMails:
                                                     </head>
                                                     <body>
                                                     <p style="font-family:'Futura Medium'">Hello {{ UserName }},</p>
-                                                    <p style="font-family:'Futura Medium'">Below are news on serach string {{ SearchString }} for Date : {{ISODate}}:</p>
+                                                    <p style="font-family:'Futura Medium'">Below is the requested news on {{ SearchString }} for Date : {{ISODate}}:</p>
                                                     
                                                     <table style="width:100%">
                                                         <col style="width:50%">
@@ -217,7 +217,7 @@ class NewsMails:
                                         "TextPart": """
                                                     Hello {{ UserName }},
                                                     
-                                                    Below are news on serach string {{ SearchString }} for Date : {{ISODate}}:  
+                                                    Below is the requested news on {{ SearchString }} for Date : {{ISODate}}:  
                                                             
                                                         {{#each articles}}
                                                         {{source.id}}
@@ -238,7 +238,7 @@ class NewsMails:
                                                     """
                                     }
                                 )
-            print("SES Templete creation successful")
+            print("SES template created successfully")
             return True
 
     def Email_News(self , SourceEmail, ToEmail, finalresult):
@@ -255,20 +255,20 @@ class NewsMails:
                                 )
         except Exception as e:
             print(str(e))
-            self.Email_Failed_Transaction("Exception error while sending templated emails..!")
+            self.Email_Failed_Transaction("An exception occured while sending the templated email")
         if Sendresponse['ResponseMetadata']['HTTPStatusCode'] == 200:
-            print('email sent successfully..')
+            print('Email sent successfully')
         else :
-            print('email sending failed..')
+            print('Failed to send Email')
 
     def Email_Failed_Transaction(self, ReasonForFailure):
         try:
-            print("Sending failed email now....")
+            print("Sending failed email now")
             body_text = """
                 Hello,
                 
-                Sending news report automation has encountered an error..!!          
-                Please check CloudWatch logs of lambda to get more insights.
+                Error in automated news delivery.         
+                Please check the Lambda CloudWatch logs for further insight.
 
                 Reason for failure is : """ + ReasonForFailure + """
                 
@@ -302,8 +302,8 @@ class NewsMails:
                 <body>
                 <p style="font-family:'Futura Medium'">Hello Labs,</p>
 
-                <p style="font-family:'Futura Medium'">Sending news report automation has encountered an error..!!</p>
-                <p style="font-family:'Futura Medium'">Please check CloudWatch logs of lambda to get more insights.</p>
+                <p style="font-family:'Futura Medium'">Error in automated news delivery.</p>
+                <p style="font-family:'Futura Medium'">Please check the Lambda CloudWatch logs for further insight.</p>
 
                 <p style="font-family:'Futura Medium'">Reason for failure is : """ + ReasonForFailure + """</p>
                 
@@ -320,7 +320,7 @@ class NewsMails:
                 },
                 Message={
                     'Subject': {
-                        'Data': "Schdeduled News Report Email Delivery Failed."
+                        'Data': "Schdeduled automated news delivery failed."
 
                     },
                     'Body': {
@@ -342,29 +342,29 @@ class NewsMails:
             return str(e)
 
 def lambda_handler(event, context):
-    print("Execution started.....")
+    print("Started execution")
     OjectNewsMails = NewsMails() 
     CreateTemplate = OjectNewsMails.CreateUpdateEmailTemplate()
     if CreateTemplate :
-        print("Email Template updated successfully...!!!!")
+        print("Email template updated successfully")
         TableResults = OjectNewsMails.GetAllDynamoDBRecord()
         if TableResults:
-            print("dynamodb has the records in it.. hence processing now")
+            print("DynamoDB contains records, processing now")
             for tableitem in TableResults:
                 NewResults = OjectNewsMails.GetAllNews(tableitem['google-search'], tableitem['user'], tableitem['email'] )
                 if NewResults :
-                    print("News results retrieved hence email now")
+                    print("News results returned, emailing now")
                     result = json.dumps(NewResults)
                     finalresultstr =  result.replace("null", "\"NA\"")
                     OjectNewsMails.Email_News( "p64517412@gmail.com", tableitem['email'], finalresultstr)
-                    ReasonForFail = "News report email sent for user {} with email {} for search string {}".format(tableitem['user'], tableitem['email'], tableitem['google-search'])
+                    ReasonForFail = "Newsletter email sent for user {} with email {} on {}".format(tableitem['user'], tableitem['email'], tableitem['google-search'])
                     print(ReasonForFail)
                 else:
-                    print("No News results retrieved hence sending fail email now")
-                    ReasonForFail = "No news results retrieved for user {} with email {} for search string {}".format(tableitem['user'], tableitem['email'], tableitem['google-search'])
+                    print("No news results retrieved, sending fail mail now")
+                    ReasonForFail = "No news results retrieved for user {} with email {} on {}".format(tableitem['user'], tableitem['email'], tableitem['google-search'])
                     OjectNewsMails.Email_Failed_Transaction(ReasonForFail)
         else:
-            print("Dynamodb does not has any email data, hence send fail email to John.")
-            OjectNewsMails.Email_Failed_Transaction("Dynamodb does not has any email data")
+            print("DynamoDB does not contain any email data, failed to send email")
+            OjectNewsMails.Email_Failed_Transaction("DynamoDB does not contain any email data")
     else :
-        print("Email Template updated Failed...!!!!")
+        print("Email template update has failed")
