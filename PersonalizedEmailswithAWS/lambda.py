@@ -320,7 +320,7 @@ class NewsMails:
                 },
                 Message={
                     'Subject': {
-                        'Data': "Schdeduled automated news delivery failed."
+                        'Data': "Scheduled automated news delivery has failed."
 
                     },
                     'Body': {
