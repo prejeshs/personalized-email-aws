@@ -115,7 +115,7 @@ class NewsMails:
                                                         {{/each}}
                                                     </table>
 
-                                                    <p style="font-family:'Futura Medium'">Please check with p64517412@gmail.com for any queries on the email.</p>
+                                                    <p style="font-family:'Futura Medium'">Please check with t16255866@gmail.com for any queries on the email.</p>
                                                     
                                                     <p style="font-family:'Futura Medium'">Best Regards,</p>
                                                     <p style="font-family:'Futura Medium'">Team PS</p>
@@ -139,7 +139,7 @@ class NewsMails:
                                                         {{content}}
                                                         {{/each}}
 
-                                                    Please check with p64517412@gmail.com for any queries on the email.
+                                                    Please check with t16255866@gmail.com for any queries on the email.
                                                     
                                                     Best Regards,
                                                     Team PS
@@ -207,7 +207,7 @@ class NewsMails:
                                                         {{/each}}
                                                     </table>
 
-                                                    <p style="font-family:'Futura Medium'">Please check with p64517412@gmail.com for any queries on the email.</p>
+                                                    <p style="font-family:'Futura Medium'">Please check with t16255866@gmail.com for any queries on the email.</p>
                                                     
                                                     <p style="font-family:'Futura Medium'">Best Regards,</p>
                                                     <p style="font-family:'Futura Medium'">Team PS</p>
@@ -231,7 +231,7 @@ class NewsMails:
                                                         {{content}}
                                                         {{/each}}
 
-                                                    Please check with p64517412@gmail.com for any queries on the email.
+                                                    Please check with t16255866@gmail.com for any queries on the email.
                                                     
                                                     Best Regards,
                                                     Team PS
@@ -314,9 +314,9 @@ class NewsMails:
                 """
             # Provide the contents of the email.
             send_mail_response = self.ses_client.send_email(
-                Source="p64517412@gmail.com",
+                Source="t16255866@gmail.com",
                 Destination={
-                    'ToAddresses': ["example1@gmail.com"]
+                    'ToAddresses': ["prejeshs04@gmail.com"]
                 },
                 Message={
                     'Subject': {
@@ -356,7 +356,7 @@ def lambda_handler(event, context):
                     print("News results returned, emailing now")
                     result = json.dumps(NewResults)
                     finalresultstr =  result.replace("null", "\"NA\"")
-                    OjectNewsMails.Email_News( "p64517412@gmail.com", tableitem['email'], finalresultstr)
+                    OjectNewsMails.Email_News( "t16255866@gmail.com", tableitem['email'], finalresultstr)
                     ReasonForFail = "Newsletter email sent for user {} with email {} on {}".format(tableitem['user'], tableitem['email'], tableitem['google-search'])
                     print(ReasonForFail)
                 else:
